@@ -16,7 +16,7 @@ jobs:
       - name: Set Reviewer
         run: |
           # Set the desired reviewer
-          gh pr review ${{ github.event.number }} --reviewer shrikant-shelar-anayasmi --body "Please review this pull request"
+          gh pr review ${{ github.event.number }} --reviewer shrikant-shelar --body "Please review this pull request"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
