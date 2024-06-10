@@ -13,18 +13,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set Reviewer
-        run: |
-          # Set the desired reviewer
-          # gh pr review ${{ github.event.number }} --reviewer shrikant-shelar --body "Please review this pull request"
+      # - name: Set Reviewer
+      #   run: |
+      #     # Set the desired reviewer
+      #     # gh pr review ${{ github.event.number }} --reviewer shrikant-shelar --body "Please review this pull request"
           
-          # Get the pull request number
-          pr_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+      #     # Get the pull request number
+      #     pr_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
           
-          # Create a review comment and mention the reviewer
-          gh pr review $pr_number --body "Please review this pull request" --comment "shrikant-shelar Please review this pull request"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     # Create a review comment and mention the reviewer
+      #     gh pr review $pr_number --body "Please review this pull request" --comment "shrikant-shelar Please review this pull request"
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: assign reviewer
+        uses: LongOddCode/assign-reviewer
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          reviewers: '["shrikant-shelar"]'
+          result: TELEMETRY_RESULT
+          run: |
+            line=`git diff -U0 ${{ github.base_ref }} | grep '^[+-]' | grep -Ev '^(--- a/|\+\+\+ b/)' | grep -i "telemetry" | wc -l`
+            if [ $line -gt 0 ]; then
+              echo '::set-output name=TELEMETRY_RESULT::true'
+            fi
 
       - name: Wait for Manual Approval
         uses: trstringer/manual-approval@v1
