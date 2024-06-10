@@ -21,7 +21,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Wait for Manual Approval
-        uses: OctoLinker/wait-action@v2
+        uses: shrikant-shelar/wait-action@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
