@@ -21,9 +21,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Wait for Manual Approval
-        uses: shrikant-shelar/wait-action@v2
+        uses: trstringer/manual-approval@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: shrikant-shelar
+          timeout-minutes: 60
 
       - name: Merge Pull Request
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
